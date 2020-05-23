@@ -1,0 +1,231 @@
+<html>
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  {% load static %}
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+	
+	
+    <style>
+	/*just bg and body style*/
+.container{
+background-color:#1E2832;
+padding-bottom:20px;
+margin-top:10px;
+border-radius:5px;
+}
+.center{
+text-align:center;  
+}
+#top{
+margin-top:20px;  
+}
+.btn-container{
+background:#fff;
+border-radius:5px;
+padding-bottom:20px;
+margin-bottom:20px;
+}
+.white{
+color:white;
+}
+.imgupload{
+color:#1E2832;
+padding-top:40px;
+font-size:7em;
+}
+#namefile{
+color:black;
+}
+h4>strong{
+color:#ff3f3f
+}
+.btn-primary{
+border-color: #ff3f3f !important;
+color: #ffffff;
+text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+background-color: #ff3f3f !important;
+border-color: #ff3f3f !important;
+}
+
+/*these two are set to not display at start*/
+.imgupload.ok{
+display:none;
+color:green;
+}
+.imgupload.stop{
+display:none;
+color:red;
+}
+
+
+/*this sets the actual file input to overlay our button*/ 
+#fileup{
+opacity: 0;
+-moz-opacity: 0;
+filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+width:200px;
+cursor: pointer;
+position:absolute;
+left: 50%;
+transform: translateX(-50%);
+bottom: 40px;
+height: 50px;
+}
+
+/*switch between input and not active input*/
+#submitbtn{
+  padding:5px 50px;
+  display:none;
+}
+#fakebtn{
+  padding:5px 40px;
+}
+
+
+/*www.emilianocostanzo.com*/
+#sign{
+	color:#1E2832;
+	position:fixed;
+	right:10px;
+	bottom:10px;
+	text-shadow:0px 0px 0px #1E2832;
+	transition:all.3s;
+}
+#sign:hover{
+	color:#1E2832;
+	text-shadow:0px 0px 5px #1E2832;
+}
+	
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 25px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #4CAF50;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+<!--form method="post" action="{% url 'parseImage:results' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+	<label for="image">Image</label>
+    <input type="file" name="myfile" id="image">
+	<label for="image">Confidence</label>
+	<input type="range" min="0" max="10" value="5" class="slider" id="conf" name="confidence">
+    <button type="submit">Scan for Fruits</button>
+  </form-->
+
+<div class="container center">
+	
+			<!--additional fields-->
+		
+	<div class="row">			
+			<div class="col-md-12">
+			<h1 class="white">The fruits found are:<br></h1>
+				<ul>
+{% for key, value in fruitOut.items %} 
+  <li><p class="white">{{key}} - {{value}}</p></li>
+{% endfor %}
+</ul>
+			</div>
+		</div>
+	
+		<div class="row">
+			<div class="col-md-12 text-center">
+				<div class="btn-container">
+					<!--the three icons: default, ok file (img), error file (not an img)>
+					<h1 class="imgupload"><i class="fa fa-file-image-o"></i></h1>
+					<h1 class="imgupload ok"><i class="fa fa-check"></i></h1>
+					<h1 class="imgupload stop"><i class="fa fa-times"></i></h1>
+					<!--this field changes dinamically displaying the filename we are trying to upload>
+					<p id="namefile">Only pics allowed! (jpg,jpeg,bmp,png)</p>
+					<!--our custom btn which which stays under the actual one>
+					<button type="button" id="btnup" class="btn btn-primary btn-lg">Browse for your pic!</button>
+					<!--this is the actual file input, is set with opacity=0 beacause we wanna see our custom one-->
+					
+					<!--img src="{{outImg}}" class="img-rounded" alt="{{outImg}}"-->
+					{% with 'resources/'|add:outImg as image_static %}
+					<img src="{% static image_static %}" class="img-rounded img-fluid" alt="{{outImg}}">
+					{% endwith %}
+				</div>
+			</div>
+		</div>
+	
+</div>
+<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+      
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script type="text/javascript">
+	
+	$('#fileup').change(function(){
+//here we take the file extension and set an array of valid extensions
+	console.log("in fucntion");
+    var res=$('#fileup').val();
+    var arr = res.split("\\");
+    var filename=arr.slice(-1)[0];
+    filextension=filename.split(".");
+    filext="."+filextension.slice(-1)[0];
+    valid=[".jpg",".png",".jpeg",".bmp"];
+//if file is not valid we show the error icon, the red alert, and hide the submit button
+    if (valid.indexOf(filext.toLowerCase())==-1){
+        $( ".imgupload" ).hide("slow");
+        $( ".imgupload.ok" ).hide("slow");
+        $( ".imgupload.stop" ).show("slow");
+      
+        $('#namefile').css({"color":"red","font-weight":700});
+        $('#namefile').html("File "+filename+" is not  pic!");
+        
+        $( "#submitbtn" ).hide();
+        $( "#fakebtn" ).show();
+    }else{
+        //if file is valid we show the green alert and show the valid submit
+        $( ".imgupload" ).hide("slow");
+        $( ".imgupload.stop" ).hide("slow");
+        $( ".imgupload.ok" ).show("slow");
+		console.log("image ok");
+        $('#namefile').css({"color":"green","font-weight":700});
+        $('#namefile').html(filename);
+      
+        $( "#submitbtn" ).show();
+        $( "#fakebtn" ).hide();
+    }
+});
+
+</script>
+
+</body>
